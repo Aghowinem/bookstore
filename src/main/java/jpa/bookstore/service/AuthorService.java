@@ -35,9 +35,7 @@ public class AuthorService {
     }
 
     public Author update(Author entity){
-        Author author = findById(entity.getId());
-        author.setName(author.getName());
-        return authorReps.save(author);
+        return authorReps.save(entity);
     }
 
     public void DeleteById(int id){
