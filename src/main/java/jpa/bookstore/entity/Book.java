@@ -2,6 +2,7 @@ package jpa.bookstore.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jpa.bookstore.base.BaseEntity;
 import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,14 +15,10 @@ import java.time.LocalDateTime;
 
 @NamedEntityGraph(name = "loadAuthor", attributeNodes = @NamedAttributeNode("author"))
 @Entity
-@EntityListeners({AuditingEntityListener.class})
+
 @Table(name = "books")
-public class Book {
+public class Book extends BaseEntity<Integer> {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     private String name;
     private double price;
 
@@ -36,19 +33,6 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @CreatedBy
-    private String createdBy;
-    @CreatedDate
-    private LocalDate createDate;
-    @LastModifiedBy
-    private String lastModifiedBy;
-    @LastModifiedDate
-    private LocalDateTime lastModifiedDate;
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -61,6 +45,17 @@ public class Book {
         this.author = author;
     }
 
+    @Override
+    public String toString() {
+        return "Book{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", discounted=" + discounted +
+                ", bookCount=" + bookCount +
+                ", author=" + author +
+                '}';
+    }
+
     public void setDiscounted(double discounted) {
         this.discounted = discounted;
     }
@@ -69,28 +64,9 @@ public class Book {
         this.bookCount = bookCount;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public void setCreateDate(LocalDate createDate) {
-        this.createDate = createDate;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
 
     public double getDiscounted() {
         return price*.25;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -114,19 +90,4 @@ public class Book {
         this.setDiscounted(price*.25);
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public LocalDate getCreateDate() {
-        return createDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public LocalDateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
 }
