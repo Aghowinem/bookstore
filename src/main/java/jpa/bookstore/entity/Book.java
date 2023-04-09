@@ -1,7 +1,9 @@
 package jpa.bookstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+@NamedEntityGraph(name = "loadAuthor", attributeNodes = @NamedAttributeNode("author"))
 @Entity
 @Table(name = "books")
 public class Book {
@@ -13,6 +15,10 @@ public class Book {
     private String name;
     private double price;
 
+    @Transient
+    private double discounted;
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
@@ -33,6 +39,14 @@ public class Book {
         this.author = author;
     }
 
+    public void setDiscounted(double discounted) {
+        this.discounted = discounted;
+    }
+
+    public double getDiscounted() {
+        return price*.25;
+    }
+
     public int getId() {
         return id;
     }
@@ -47,5 +61,9 @@ public class Book {
 
     public Author getAuthor() {
         return author;
+    }
+    @PostLoad
+    private void calcDiscount(){
+        this.setDiscounted(price*.25);
     }
 }

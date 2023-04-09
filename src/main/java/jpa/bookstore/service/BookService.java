@@ -38,4 +38,8 @@ public class BookService {
         System.out.println("#" + id +" has been deleted!");
         bookReps.deleteById(id);
     }
+
+//    public int deleteByAuthorId(int id){
+//        return bookReps.deleteByAuthorsId(id);
+//    }
 }

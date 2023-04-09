@@ -10,14 +10,16 @@ import java.util.List;
 @Service
 public class AuthorService {
 
-
     @Autowired
     private AuthorReps authorReps;
-
 
     public Author findById(int id){
 
         return authorReps.findById(id).orElseThrow();
+    }
+
+    public Author getOne(int id){
+        return authorReps.getById(id);
     }
 
     public List<Author> findAll(){
